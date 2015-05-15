@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <title></title>
+
+  
+  <script>
+
+    function submitData(){
+
+      var tag = $("#tagId").val(); 
+      if(tag==null || tag==""){
+        alert("タグIDを入力して下さい。");
+        return;
+      }    
+
+      var journalCategory = $("#journalCategory").val(); 
+      if(journalCategory==null || journalCategory==""){
+        alert("Journalカテゴリを入力して下さい。");
+        return;
+      }    
+
+      var data = [];
+      $("#keywordsList > li").each(function(){
+        var kws = $(this).find(".keywords").val();
+        var aidx = $(this).find(".articleIndex").val();
+        var ktitle = $(this).find(".keywordTitle").val();
+        var sq = $(this).find(".searchQuery").val();
+        var pr = $(this).find(".priority").val();
+
+        if(kws==null || kws=="" || aidx==null || aidx==""){
+          return;
+        }
+
+        var dataToAdd = {};
+        dataToAdd['keywords'] = kws;
+        dataToAdd['articleIndex'] = aidx;
+        if(ktitle!=null)
+          dataToAdd['keywordTitle'] = ktitle;
+        if(sq!=null)
+          dataToAdd['searchQuery'] = sq;
+        if(pr!=null)
+          dataToAdd['priority'] = pr;
+
+        data.push(dataToAdd);
+
+      });
+
+
+      $.ajax({
+        type: "POST",
+        url: "ajax.php",
+        data: {"a": "setKeywords", "tag": tag, "journalCategory": journalCategory, "data": data},
+        success:function(result){
+
+          var resultJSON = $.parseJSON(result);
+          if(resultJSON.ok==1){
+            alert("ok");       
+          }   
+        },
+        error:function(){
+        }
+      });
+
+    }
+
+    function addKeyword(){
+      $("#keywordsList").append('<li><input class="keywords" type="text" name="キーワード" placeholder="キーワード"><input class="articleIndex" type="text" name="かな" placeholder="かな"><input class="keywordTitle" type="text" name="タイトル" placeholder="タイトル"><input class="searchQuery" type="text" name="クエリ" placeholder="クエリ"><input class="priority" type="text" name="重要度" placeholder="重要度"></li>');
+    }
+
+  </script>
+  <style>
+    #keywordsList {
+      margin-top: 20px;
+    }
+    #keywordsList li{
+      margin: 5px 0 5px 0;
+    }
+    #keywordsList li input{
+      margin: 0 5px 0 5px;
+    }
+    #list-wrapper{
+      padding: 10px;
+    }
+    #buttons{
+      margin-top: 30px;
+    }
+    #addKeywordBtn{
+      float: right;
+      margin-right: 20%;
+    }
+    #submitDataBtn{
+      float: left;
+      margin-left: 5%;
+    }
+
+  </style>
+ </head>
+
+ <body style="background-color:#eee">
+  <form id="list-wrapper">
+    Tag ID:<input id="tagId" type="text" name="tag ID" />
+    Journal Category:<input id="journalCategory" type="text" name="Journal Category" />
+    <ul id="keywordsList">
+      <li><input class="keywords" type="text" name="キーワード" placeholder="キーワード"><input class="articleIndex" type="text" name="かな" placeholder="かな"><input class="keywordTitle" type="text" name="タイトル" placeholder="タイトル"><input class="searchQuery" type="text" name="クエリ" placeholder="クエリ"><input class="priority" type="text" name="重要度" placeholder="重要度"></li>
+    </ul>
+    <div id="buttons">
+      <input id="addKeywordBtn" type="submit" value="キーワードを追加" onclick="addKeyword(); return false">
+      <input id="submitDataBtn" type="submit" value="OK" onclick="submitData(); return false">
+    </div>
+  </form>
+ </body>
+</html>
