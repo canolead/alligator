@@ -449,15 +449,20 @@ class ArticleController{
       $contentNGwordArray = array('/^[\&nbsp\;|\s|\x{3000}]+$/u');
       */
 
-      $header = ArticleAnalyzor::extractArticleHeader($path, $contentClassName, $itemClassName, $contentKeywordArray, $contentNGwordArray, $fullText);
+      $contentHeaders = ArticleAnalyzor::extractArticleHeader($path, $contentClassName, $itemClassName, $contentKeywordArray, $contentNGwordArray);
 
-      if(isset($header) && strlen($header)>0){
+      if(isset($contentHeaders["headerStr"]) && strlen($contentHeaders["headerStr"])>0){
         $headerPath = CONTENT_DIRECTORY_PATH."/header_".$article->getId().".html";
-        file_put_contents($headerPath, utf8_encode($header));
+        file_put_contents($headerPath, $contentHeaders["headerStr"]));
+      }
+
+      if(isset($contentHeaders["fullTextStr"]) && strlen($contentHeaders["fullTextStr"])>0){
+        $headerPath2 = CONTENT_DIRECTORY_PATH."/fulltext_".$article->getId().".html";
+        file_put_contents($headerPath2, $contentHeaders["fullTextStr"]);
       }
       
- //     $article->setContentHeader($header);
-      return $header;
+ //   $article->setContentHeader($header);
+      return $fullText ? $contentHeaders["fullTextStr"] : $contentHeaders["headerStr"];
     }
     return NULL;
   }

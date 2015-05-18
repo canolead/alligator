@@ -4,6 +4,7 @@ require_once dirname(__FILE__).'/WordpressAPI.php';
 require_once dirname(__FILE__).'/pageConfig.php';
 date_default_timezone_set('Asia/Tokyo');
 
+
 if(isset($argv[1])){
 	$journalCategory = $argv[1];
 }else{
@@ -20,6 +21,7 @@ foreach($journalList as $journal){
 }
 
 //Add tags to the new articles
+$modifiedTags = array();
 foreach($journalList as $journal){
 
 	$newArticles = ArticleController::getArticlesFromDB(array("processed"=>false , "journal"=>$journal['id']));
@@ -28,7 +30,6 @@ foreach($journalList as $journal){
 	
 		ArticleController::extractImagesFromArticleContent($a);
 		$tags = ArticleController::addTagsToArticle($a, ArticleController::tagFromTitle, true);
-
 
 		foreach($tags as $t){
 
@@ -79,10 +80,45 @@ foreach($journalList as $journal){
 				error_log("post failed");
 			}
 
+			if(!in_array($t))
+				$modifiedTags[] = $t; 
+
 			sleep(1);
 		}
 		
 	}
+}
+
+var_dump($modifiedTags);
+
+foreach ($modifiedTags as $t) {
+	$pageConfig = getPageConfig($t);
+
+	$condition = array();
+	if(isset($pageConfig['dispDuration']))
+		$condition['date'] = date("Y-m-d H:i:s", strtotime($pageConfig['dispDuration']));
+	if(isset($pageConfig['maxNumOfArticles']))
+		$condition['numOfArticles'] = $pageConfig['maxNumOfArticles'];
+	if(isset($pageConfig['withThumbnailOnly']))
+		$condition['withThumbnailOnly'] = $pageConfig['withThumbnailOnly'];
+
+	$needContentHeaderFile = isset($pageConfig['needContentHeaderFile']) ? $pageConfig['needContentHeaderFile'] : false;		
+
+	$articles = getArticlesByTagId($t, $condition, $pageConfig["sortMethod"]); 
+
+	if($needContentHeaderFile){
+		$as = array();
+		foreach ($articles as $a) {
+			if(isset($a['headerFile'])){
+				$as[] = $a;
+			}
+		}
+	}else{
+
+		$as = $articles;
+	}
+
+	file_put_contents("articlesData_".$t.".json", json_encode($as));
 }
 
 ?>

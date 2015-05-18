@@ -85,7 +85,7 @@
 
 			case 12:
 				$sortMethod = sortByDate;
-				$dispDuration = "-1 days";
+				$dispDuration = "-10days";
 				$blogDuration = "today";
 				$blogType = "monster2";
 				$blogId = "gossipmatome";
@@ -96,6 +96,7 @@
 				$blogTitleAppendedStr = "";
 				$contentKeywordFile = "contentKeywordsMonster.json";
 				$fullText = true;
+				$needContentHeaderFile = true;
 				break;
 
 			case 13:
@@ -109,6 +110,7 @@
 				$blogTitleAppendedStr = "";
 				$contentKeywordFile = "contentKeywordsMonster.json";
 				$fullText = true;
+				$needContentHeaderFile = true;
 				break;
 
 			case 14:
@@ -122,6 +124,7 @@
 				$blogTitleAppendedStr = "";
 				$contentKeywordFile = "contentKeywordsMonster.json";
 				$fullText = true;
+				$needContentHeaderFile = true;
 				break;
 
 			case 15:
@@ -135,6 +138,7 @@
 				$blogTitleAppendedStr = "";
 				$contentKeywordFile = "contentKeywordsMonster.json";
 				$fullText = true;
+				$needContentHeaderFile = true;
 				break;
 
 
@@ -185,6 +189,9 @@
 		if(isset($contentKeywordFile))
 			$result['contentKeywordFile'] = $contentKeywordFile;
 
+		if(isset($needContentHeaderFile))
+			$result['needContentHeaderFile'] = $needContentHeaderFile;
+ 
 		$result['sortMethod'] = $sortMethod;
 
 		return $result;

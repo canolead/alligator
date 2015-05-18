@@ -71,8 +71,8 @@
 					
 					$restructedData[] = array('title' => $data[$key]['title'], 'url' => $data[$key]['url'], 'pubDate' => date('Y-m-d',strtotime($data[$key]['pubDate'])), 'pubTime' => $data[$key]['pubDate'] , 'name' => $data[$key]['name'], 'headerFile'=>generateContentHeaderPath($data[$key]['id']), 'journalThumbnail' => $data[$key]['thumbnail'], 'articleThumbnail' => generateFullImagePath($data[$key]['imagePath'], $data[$key]['contentImages']), 'index' => $value);
 				}
-				
 				break;
+
 			case sortByDateAndIndex:
 
 				$metadataArray = array();
@@ -115,6 +115,7 @@
 					}
 				}
 				break;
+
 			case sortByIndexAndDate:
 				
 				$restructedData = array();
@@ -170,6 +171,16 @@
 		return $temp[0].$separator.$appendedStr;
 	}
 
+	function generateContentHeaderPath($id){
+		$filename =  CONTENT_DIRECTORY_PATH."/header_".$id.".html";
+		if (file_exists($filename)) {
+			return CONTENT_URL."/header_".$id.".html";
+		}else{
+			return NULL;
+		}
+
+	}
+
 	function generateFullImagePath($imagePath, $contentImages){
 
 		if (!isset($imagePath) || strlen($imagePath)==0) {
@@ -183,16 +194,6 @@
 		}else{
 			return array( "normal"=> IMAGE_URL."/thumbnail_".$imagePath.".jpg", "wide" => IMAGE_URL."/thumbnail_".$imagePath."_w.jpg");
 		}
-	}
-
-	function generateContentHeaderPath($id){
-		$filename =  CONTENT_DIRECTORY_PATH."/header_".$id.".html";
-		if (file_exists($filename)) {
-			return CONTENT_URL."/header_".$id.".html";
-		}else{
-			return NULL;
-		}
-
 	}
 
 	function getArticlesForRSS($tagId, $numOfArticles=3){
@@ -215,5 +216,6 @@
 		return $articlesArray;
 
 	}
+
 
 ?>

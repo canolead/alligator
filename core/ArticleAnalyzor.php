@@ -56,7 +56,7 @@
 		}
 
 
-		public static function extractArticleHeader($filename, $focusedClass, $focusedItemClass=NULL, $contentKeywordArray=NULL, $contentNGwordArray=NULL, $fullText=false){
+		public static function extractArticleHeader($filename, $focusedClass, $focusedItemClass=NULL, $contentKeywordArray=NULL, $contentNGwordArray=NULL){
 			
 		
 			$html = file_get_html($filename);
@@ -80,11 +80,11 @@
 			}
 
 			if(isset($focusedItemClass)){
-				$header = extractTextByClass($container, $focusedItemClass, $contentKeywordArray,  $contentNGwordArray, $fullText);
-				return $header;
+				$headerArray = extractTextByClass($container, $focusedItemClass, $contentKeywordArray,  $contentNGwordArray);
+				return $headerArray;
 			}else{
-				$header = extractTextRecursively($container, $contentKeywordArray, $contentNGwordArray);
-				return $header["string"];
+				$headerArray = extractTextRecursively($container, $contentKeywordArray, $contentNGwordArray);
+				return array("headerStr"=>$headerArray["string"]);
 			}
 
 		}		
@@ -124,7 +124,7 @@
 
 	}
 
-	function extractTextByClass($container, $className, $contentKeywordArray=NULL, $contentNGwordArray=NULL, $fullText = false){
+	function extractTextByClass($container, $className, $contentKeywordArray=NULL, $contentNGwordArray=NULL){
 
 		$imgAdded = array();
 		$resStr = ""; 
@@ -176,6 +176,7 @@
 
 
 		$headerText = "";
+		$articleHeaderStr = "";
 		$currentDivIndex = 0; 
 		$firstRow = true;
 		$numOfResponses = 0;
@@ -308,7 +309,13 @@
 				$numOfResponses++;
 			}
 
-			if(strlen($resStr)>2200 && !$fullText) break;
+			if($numOfResponses >= 8 && strlen($articleHeaderStr)==0){
+				$articleHeaderStr = $resStr;
+			}
+		}
+
+		if(strlen($articleHeaderStr)==0){
+			$articleHeaderStr = $resStr;
 		}
 /*
 		$imgStr = "";
@@ -350,7 +357,7 @@
 	    var_dump($resStr.$imgStr);
 	    */
 
-	    return $resStr;
+	    return array("headerStr"=>$articleHeaderStr, "fullTextStr"=>$resStr);
 	}
 
 	function extractTextRecursively($e, $contentKeywordArray=NULL, $contentNGwordArray=NULL){
