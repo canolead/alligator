@@ -132,6 +132,19 @@
 		echo json_encode(array("ok"=>1, "result"=>$tweets));
 	}
 
+	function getArticlesJSON(){
+
+		$tagId = $_GET['tag'];
+		if(!isset($tagId)){
+			echo json_encode(array("ok"=>0, "error"=>"Invalid tag ID"));
+			return;
+		}
+
+		$data = file_get_contents(API_DIRECTORY_PATH."/articlesData_".$tagId.".json");
+		echo $data;
+	}
+
+
 /*
 	function getArticlesForRSS(){
 

@@ -2,6 +2,7 @@
 require_once dirname(__FILE__).'/ArticleController.php';
 require_once dirname(__FILE__).'/WordpressAPI.php';
 require_once dirname(__FILE__).'/pageConfig.php';
+require_once dirname(__FILE__).'/AlligatorAPI.php';
 date_default_timezone_set('Asia/Tokyo');
 
 
@@ -80,45 +81,16 @@ foreach($journalList as $journal){
 				error_log("post failed");
 			}
 
-			if(!in_array($t))
+			if(!in_array($t, $modifiedTags))
 				$modifiedTags[] = $t; 
 
 			sleep(1);
 		}
-		
 	}
 }
 
-var_dump($modifiedTags);
-
 foreach ($modifiedTags as $t) {
-	$pageConfig = getPageConfig($t);
-
-	$condition = array();
-	if(isset($pageConfig['dispDuration']))
-		$condition['date'] = date("Y-m-d H:i:s", strtotime($pageConfig['dispDuration']));
-	if(isset($pageConfig['maxNumOfArticles']))
-		$condition['numOfArticles'] = $pageConfig['maxNumOfArticles'];
-	if(isset($pageConfig['withThumbnailOnly']))
-		$condition['withThumbnailOnly'] = $pageConfig['withThumbnailOnly'];
-
-	$needContentHeaderFile = isset($pageConfig['needContentHeaderFile']) ? $pageConfig['needContentHeaderFile'] : false;		
-
-	$articles = getArticlesByTagId($t, $condition, $pageConfig["sortMethod"]); 
-
-	if($needContentHeaderFile){
-		$as = array();
-		foreach ($articles as $a) {
-			if(isset($a['headerFile'])){
-				$as[] = $a;
-			}
-		}
-	}else{
-
-		$as = $articles;
-	}
-
-	file_put_contents("articlesData_".$t.".json", json_encode($as));
+	AlligatorAPI::generateArticleJSONFiles($t);
 }
 
 ?>

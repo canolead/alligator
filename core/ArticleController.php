@@ -453,7 +453,7 @@ class ArticleController{
 
       if(isset($contentHeaders["headerStr"]) && strlen($contentHeaders["headerStr"])>0){
         $headerPath = CONTENT_DIRECTORY_PATH."/header_".$article->getId().".html";
-        file_put_contents($headerPath, $contentHeaders["headerStr"]));
+        file_put_contents($headerPath, $contentHeaders["headerStr"]);
       }
 
       if(isset($contentHeaders["fullTextStr"]) && strlen($contentHeaders["fullTextStr"])>0){

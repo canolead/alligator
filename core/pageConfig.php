@@ -45,6 +45,8 @@
 
 			case 7:
 				$sortMethod = sortByDateAndIndex;
+				$dispDuration = "-1days";
+				$blogDuration = "today";
 				$blogType = "normal";
 				$blogURL = "http://fate.animedi.net";
 				$blogTitleAppendedStr = "";
@@ -53,6 +55,8 @@
 
 			case 8:
 				$sortMethod = sortByDateAndIndex;
+				$dispDuration = "-1days";
+				$blogDuration = "today";
 				$blogType = "monster";
 				$blogURL = "http://aggligator.com";
 				$blogTitleAppendedStr = "";
@@ -61,6 +65,8 @@
 
 			case 9:
 				$sortMethod = sortByDateAndIndex;
+				$dispDuration = "-1days";
+				$blogDuration = "today";
 				$blogType = "monster";
 				$blogURL = "http://gazo.aggligator.com";
 				$blogTitleAppendedStr = "";
@@ -69,6 +75,8 @@
 
 			case 10:
 				$sortMethod = sortByDateAndIndex;
+				$dispDuration = "-1days";
+				$blogDuration = "today";
 				$blogType = "monster";
 				$blogURL = "http://zannen.o0o0.jp/";
 				$blogTitleAppendedStr = "";
@@ -77,6 +85,8 @@
 				
 			case 11:
 				$sortMethod = sortByDateAndIndex;
+				$dispDuration = "-1days";
+				$blogDuration = "today";
 				$blogType = "monster";
 				$blogURL = "http://yaba.aggligator.com";
 				$blogTitleAppendedStr = "";
@@ -85,7 +95,7 @@
 
 			case 12:
 				$sortMethod = sortByDate;
-				$dispDuration = "-10days";
+				$dispDuration = "-1days";
 				$blogDuration = "today";
 				$blogType = "monster2";
 				$blogId = "gossipmatome";
@@ -97,10 +107,13 @@
 				$contentKeywordFile = "contentKeywordsMonster.json";
 				$fullText = true;
 				$needContentHeaderFile = true;
+				$application = array("akb"=>array(12,13,14,15));
 				break;
 
 			case 13:
 				$sortMethod = sortByDateAndIndex;
+				$dispDuration = "-1days";
+				$blogDuration = "today";
 				$blogType = "monster2";
 				$blogId = "gossipmatome-idols";
 				$blogId2 = "gossipmatome-idolsant";
@@ -111,10 +124,13 @@
 				$contentKeywordFile = "contentKeywordsMonster.json";
 				$fullText = true;
 				$needContentHeaderFile = true;
+				$application = array("akb"=>array(12,13,14,15));
 				break;
 
 			case 14:
 				$sortMethod = sortByDateAndIndex;
+				$dispDuration = "-1days";
+				$blogDuration = "today";
 				$blogType = "monster2";
 				$blogId = "gossipmatome-nmb";
 				$blogId2 = "gossipmatome-nmbant";
@@ -125,10 +141,13 @@
 				$contentKeywordFile = "contentKeywordsMonster.json";
 				$fullText = true;
 				$needContentHeaderFile = true;
+				$application = array("akb"=>array(12,13,14,15));
 				break;
 
 			case 15:
 				$sortMethod = sortByDateAndIndex;
+				$dispDuration = "-1days";
+				$blogDuration = "today";
 				$blogType = "monster2";
 				$blogId = "gossipmatome-ske";
 				$blogId2 = "gossipmatome-skeant";
@@ -139,8 +158,8 @@
 				$contentKeywordFile = "contentKeywordsMonster.json";
 				$fullText = true;
 				$needContentHeaderFile = true;
+				$application = array("akb"=>array(12,13,14,15));
 				break;
-
 
 			default:
 				break;
@@ -192,6 +211,9 @@
 		if(isset($needContentHeaderFile))
 			$result['needContentHeaderFile'] = $needContentHeaderFile;
  
+		if(isset($application))
+			$result['application'] = $application;
+
 		$result['sortMethod'] = $sortMethod;
 
 		return $result;
